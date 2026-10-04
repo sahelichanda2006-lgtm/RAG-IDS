@@ -1,0 +1,53 @@
+# Feature Glossary for Zeek Flowmeter Features in RT-IoT2022
+# Authored for RAG-IDS threat knowledge base
+
+features:
+  flow_duration:
+    name: "Flow Duration"
+    description: "Total elapsed time of the network connection in microseconds from initial packet to connection termination."
+    interpretation: "Short durations characterize port scan probes or rapid floods; long durations characterize Slowloris connections or long-lived MQTT sessions."
+
+  flow_SYN_flag_count:
+    name: "TCP SYN Flag Count"
+    description: "Total number of packets observed in the flow with the TCP SYN (Synchronize) control flag enabled."
+    interpretation: "A high SYN flag count without corresponding ACKs is the primary indicator of a TCP SYN flood."
+
+  flow_FIN_flag_count:
+    name: "TCP FIN Flag Count"
+    description: "Total number of packets observed with the TCP FIN (Finish connection) control flag enabled."
+    interpretation: "Packets with FIN set without prior session establishment indicate an Nmap FIN scan or Xmas scan."
+
+  fwd_PSH_flag_count:
+    name: "Forward Push Flag Count"
+    description: "Number of forward packets carrying the TCP PSH (Push) flag, instructing the receiving TCP stack to forward data immediately to the application."
+    interpretation: "PSH flag set together with FIN and URG flags is a hallmark of Nmap Xmas tree scans."
+
+  fwd_URG_flag_count:
+    name: "Forward Urgent Flag Count"
+    description: "Number of forward packets with the TCP URG (Urgent) flag enabled, indicating urgent out-of-band data."
+    interpretation: "URG is rarely used in modern benign traffic; its presence strongly indicates crafted probing tools like Nmap Xmas scans."
+
+  flow_iat.min:
+    name: "Minimum Flow Inter-Arrival Time"
+    description: "Smallest observed duration of time between two successive packets in the bidirectional flow."
+    interpretation: "Extremely low inter-arrival times indicate automated packet generation tools like Hping3 running at full wire speed."
+
+  bwd_init_window_size:
+    name: "Backward Initial TCP Window Size"
+    description: "The receive window buffer size announced by the responder in the initial TCP handshake packet."
+    interpretation: "Specific fixed window values often correlate with particular operating system TCP stacks during OS fingerprinting."
+
+  active.min:
+    name: "Minimum Active Time"
+    description: "Minimum duration the flow was actively transmitting data before becoming idle."
+    interpretation: "Slowloris flows maintain sustained active periods with minimal payload transmission."
+
+  fwd_pkts_tot:
+    name: "Total Forward Packets"
+    description: "Cumulative count of packets transmitted from source to destination."
+    interpretation: "Used to distinguish single-packet probe scans from multi-packet brute-force attacks or floods."
+
+  service_http:
+    name: "HTTP Service Indicator"
+    description: "Binary one-hot indicator denoting whether Zeek identified the flow as the HTTP protocol."
+    interpretation: "Crucial feature differentiating Slowloris DoS attacks (which exclusively target HTTP) from general TCP network floods."

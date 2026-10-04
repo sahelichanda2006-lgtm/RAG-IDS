@@ -1,0 +1,50 @@
+# Dataset Configuration for RT-IoT2022
+# Source: UCI Machine Learning Repository (Dataset ID: 942)
+# Citation: Sharmila, B. S. and Nagapadma, R. (2023). RT-IoT2022. CC BY 4.0.
+
+dataset_name: "RT-IoT2022"
+raw_data_path: "data/raw/rt_iot2022.csv"
+processed_train_path: "data/processed/train.parquet"
+processed_test_path: "data/processed/test.parquet"
+test_samples_pool_path: "data/processed/test_samples_pool.json"
+
+# Target label column
+label_column: "Attack_type"
+
+# Source port is effectively random (ephemeral) and must be dropped
+drop_columns:
+  - "id.orig_p"
+
+# Destination port carries meaningful service semantics and is retained
+destination_port_column: "id.resp_p"
+
+# Text categorical columns to be One-Hot Encoded
+categorical_columns:
+  - "proto"
+  - "service"
+
+# Split parameters
+split:
+  test_size: 0.20
+  random_seed: 42
+  stratified: true
+
+# Deduplication strategy:
+# "pre_split": Drops exact duplicates across all retained columns before train/test split (strict pre-split).
+# "train_only": Performs stratified split first, then deduplicates only the training set so minority classes retain test samples.
+dedup_strategy: "pre_split"
+
+# Mapping from RT-IoT2022 specific labels to shared attack families
+label_to_family:
+  DOS_SYN_Hping: "DoS"
+  DDOS_Slowloris: "DoS"
+  ARP_poisioning: "Spoofing"
+  NMAP_TCP_scan: "Reconnaissance"
+  NMAP_UDP_SCAN: "Reconnaissance"
+  NMAP_XMAS_TREE_SCAN: "Reconnaissance"
+  NMAP_FIN_SCAN: "Reconnaissance"
+  NMAP_OS_DETECTION: "Reconnaissance"
+  Metasploit_Brute_Force_SSH: "Brute force"
+  Thing_Speak: "Normal"
+  MQTT_Publish: "Normal"
+  Wipro_bulb: "Normal"

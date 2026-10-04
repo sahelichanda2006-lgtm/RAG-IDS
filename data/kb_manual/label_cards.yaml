@@ -1,0 +1,87 @@
+# Ground Truth Label Cards for RT-IoT2022 Dataset Labels
+# Authored for RAG-IDS threat knowledge base
+
+labels:
+  DOS_SYN_Hping:
+    name: "TCP SYN Flood (Hping3)"
+    family: "DoS"
+    tool: "Hping3 network packet generator"
+    description: "A Denial of Service attack where the adversary sends a rapid flood of TCP SYN packets with randomized source ports towards target port 21, exhausting target TCP connection state tables and preventing legitimate handshakes."
+    mechanics: "High packet rate, zero byte payload, identical TCP SYN flags without ACK, and minimal flow duration."
+
+  DDOS_Slowloris:
+    name: "Slowloris HTTP Denial of Service"
+    family: "DoS"
+    tool: "Slowloris Python / Perl exploit script"
+    description: "An application-layer Denial of Service attack where the adversary opens multiple concurrent HTTP connections to port 80 and sends partial HTTP headers at slow, periodic intervals, exhausting server thread pools while using minimal bandwidth."
+    mechanics: "HTTP service, long active flow durations, small window sizes, and periodic packet inter-arrival times designed to keep sockets open."
+
+  ARP_poisioning:
+    name: "ARP Cache Poisoning / Spoofing"
+    family: "Spoofing"
+    tool: "Ettercap / Arpspoof suite"
+    description: "A local network attack where gratuitous or fraudulent ARP replies associate the attacker's MAC address with the IP address of the default gateway, enabling Man-in-the-Middle traffic interception."
+    mechanics: "High volume of unsolicited ARP packets, high packet rates across broadcast and unicast channels."
+
+  NMAP_TCP_scan:
+    name: "Nmap TCP Port Scan"
+    family: "Reconnaissance"
+    tool: "Nmap (Network Mapper)"
+    description: "Port discovery scan probing common TCP destination ports to determine which listening network services and ports are open or filtered on the target host."
+    mechanics: "Repeated TCP handshake probe packets with zero payload across multiple destination ports."
+
+  NMAP_UDP_SCAN:
+    name: "Nmap UDP Port Scan"
+    family: "Reconnaissance"
+    tool: "Nmap (Network Mapper -sU)"
+    description: "Port discovery scan sending raw UDP packets to target ports (e.g., DNS, NTP, DHCP). Open ports produce no response or protocol responses; closed ports generate ICMP Port Unreachable packets."
+    mechanics: "Zero or fixed payload UDP flows with characteristic inter-arrival delay."
+
+  NMAP_XMAS_TREE_SCAN:
+    name: "Nmap TCP Xmas Tree Scan"
+    family: "Reconnaissance"
+    tool: "Nmap (Network Mapper -sX)"
+    description: "Stealth port scan sending TCP packets with the FIN, PSH, and URG flags set ('lit up like a Christmas tree'), violating standard RFC 793 states to elicit closed-port RST responses from non-standard TCP/IP stacks."
+    mechanics: "Simultaneous flow_FIN_flag_count, fwd_PSH_flag_count, and fwd_URG_flag_count set to 1."
+
+  NMAP_FIN_SCAN:
+    name: "Nmap TCP FIN Scan"
+    family: "Reconnaissance"
+    tool: "Nmap (Network Mapper -sF)"
+    description: "Stealth scan sending bare TCP FIN packets without prior SYN synchronization, used to bypass naive stateful firewalls that only monitor SYN handshakes."
+    mechanics: "Strict flow_FIN_flag_count set to 1 without prior SYN or ACK flags and zero payload."
+
+  NMAP_OS_DETECTION:
+    name: "Nmap Operating System Fingerprinting"
+    family: "Reconnaissance"
+    tool: "Nmap (Network Mapper -O)"
+    description: "Active OS detection probing open and closed TCP/UDP ports with deliberate RFC non-compliant packets to inspect TCP options, window sizes, and IP ID behavior against Nmap's OS fingerprint database."
+    mechanics: "Diverse burst of TCP options, variable window sizes, and multi-protocol probes."
+
+  Metasploit_Brute_Force_SSH:
+    name: "SSH Password Brute Force (Metasploit)"
+    family: "Brute force"
+    tool: "Metasploit Framework auxiliary/scanner/ssh/ssh_login module"
+    description: "Automated credential guessing attack executing rapid authentication attempts against OpenSSH on destination port 22 using dictionary user/password combinations."
+    mechanics: "Repeated TCP connections to port 22 with SSH banner exchange and encrypted key negotiation followed by disconnects."
+
+  Thing_Speak:
+    name: "ThingSpeak IoT Cloud Telemetry"
+    family: "Normal"
+    tool: "Legitimate IoT sensor client"
+    description: "Benign telemetry traffic sent from IoT environmental sensors transmitting periodic readings via HTTP/HTTPS REST API to the ThingSpeak cloud service."
+    mechanics: "Regular inter-arrival times, small consistent HTTP payloads, low packet count per burst."
+
+  MQTT_Publish:
+    name: "MQTT Publish Telemetry"
+    family: "Normal"
+    tool: "Standard MQTT client / Mosquitto"
+    description: "Benign publish-subscribe telemetry traffic transmitting sensor updates to an MQTT broker over destination port 1883 or 8883."
+    mechanics: "Small fixed-header MQTT control packets, keep-alive ping intervals, minimal jitter."
+
+  Wipro_bulb:
+    name: "Wipro Smart Bulb Management Traffic"
+    family: "Normal"
+    tool: "Smart bulb firmware communication"
+    description: "Benign local IoT traffic for smart lighting state sync, heartbeat signals, and mobile controller commands."
+    mechanics: "Periodic UDP/TCP unicast heartbeats and multicast discovery beacons."

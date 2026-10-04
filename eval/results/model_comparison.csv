@@ -1,0 +1,4 @@
+Model,Macro F1 (Mean ± Std),Precision,Recall,Fit Time (s)
+Logistic Regression,0.8166 ± 0.0097,0.7945,0.9011,0.42
+Random Forest,0.8800 ± 0.0061,0.8781,0.8845,0.19
+XGBoost,0.8852 ± 0.0096,0.8870,0.8851,1.76

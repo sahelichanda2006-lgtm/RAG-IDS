@@ -1,0 +1,79 @@
+# Dataset Configuration for CICIoT2023 (Extensible Second Dataset Roadmap)
+# Source: Canadian Institute for Cybersecurity (UNB)
+# Reference: https://www.unb.ca/cic/datasets/iotdataset-2023.html
+# 33 attacks across 7 core categories generated from 105 IoT devices.
+
+dataset_name: "CICIoT2023"
+raw_data_url: "https://www.unb.ca/cic/datasets/iotdataset-2023.html"
+raw_data_path: "data/raw/ciciot2023_sample.csv"
+processed_train_path: "data/processed/ciciot2023_train.parquet"
+processed_test_path: "data/processed/ciciot2023_test.parquet"
+
+# Target label column in CICIoT2023
+label_column: "label"
+
+# Ephemeral / non-generalizable columns to drop
+drop_columns:
+  - "Unnamed: 0"
+
+# Numerical flow statistics
+categorical_columns:
+  - "Protocol Type"
+
+# Split parameters
+split:
+  test_size: 0.20
+  random_seed: 42
+  stratified: true
+
+# Mapping all 33 CICIoT2023 attacks to the 8 Shared Attack Families
+label_to_family:
+  # Benign
+  BenignTraffic: "Normal"
+
+  # DDoS
+  DDoS-ICMP_Flood: "DoS"
+  DDoS-UDP_Flood: "DoS"
+  DDoS-TCP_Flood: "DoS"
+  DDoS-PSHACK_Flood: "DoS"
+  DDoS-SYN_Flood: "DoS"
+  DDoS-RSTFINFlood: "DoS"
+  DDoS-SynonymousIP_Flood: "DoS"
+  DDoS-HTTP_Flood: "DoS"
+  DDoS-UDP_Fragmentation: "DoS"
+  DDoS-ICMP_Fragmentation: "DoS"
+  DDoS-ACK_Fragmentation: "DoS"
+  DDoS-SlowLoris: "DoS"
+
+  # DoS
+  DoS-UDP_Flood: "DoS"
+  DoS-TCP_Flood: "DoS"
+  DoS-SYN_Flood: "DoS"
+  DoS-HTTP_Flood: "DoS"
+
+  # Reconnaissance
+  Recon-HostDiscovery: "Reconnaissance"
+  Recon-OSScan: "Reconnaissance"
+  Recon-PortScan: "Reconnaissance"
+  Recon-PingSweep: "Reconnaissance"
+  VulnerabilityScan: "Reconnaissance"
+
+  # Brute Force
+  DictionaryBruteForce: "Brute force"
+
+  # Spoofing
+  DNS_Spoofing: "Spoofing"
+  MITM-ArpSpoofing: "Spoofing"
+
+  # Web-Based Attacks
+  SqlInjection: "Web attack"
+  CommandInjection: "Web attack"
+  XSS: "Web attack"
+  Backdoor_Malware: "Botnet/Malware"
+  BrowserHijacking: "Web attack"
+  Uploading_Attack: "Web attack"
+
+  # Mirai Botnet
+  Mirai-greeth_flood: "Botnet/Malware"
+  Mirai-greip_flood: "Botnet/Malware"
+  Mirai-udpplain: "Botnet/Malware"

@@ -1,0 +1,120 @@
+# Attack Mapping Configuration for RAG-IDS
+# Verified against official MITRE STIX 2.1 & CAPEC v3.9 on 2 October 2026.
+
+attacks:
+  DOS_SYN_Hping:
+    family: "DoS"
+    capec:
+      - id: "CAPEC-482"
+        name: "TCP Flood"
+    attack:
+      - id: "T1499.001"
+        name: "OS Exhaustion Flood"
+      - id: "T1498.001"
+        name: "Direct Network Flood"
+
+  DDOS_Slowloris:
+    family: "DoS"
+    capec:
+      - id: "CAPEC-469"
+        name: "HTTP DoS"
+    attack:
+      - id: "T1499.002"
+        name: "Service Exhaustion Flood"
+
+  ARP_poisioning:
+    family: "Spoofing"
+    capec:
+      - id: "CAPEC-141"
+        name: "Cache Poisoning"
+    attack:
+      - id: "T1557.002"
+        name: "ARP Cache Poisoning"
+
+  NMAP_TCP_scan:
+    family: "Reconnaissance"
+    capec:
+      - id: "CAPEC-300"
+        name: "Port Scanning"
+      - id: "CAPEC-287"
+        name: "TCP SYN Scan"
+      - id: "CAPEC-301"
+        name: "TCP Connect Scan"
+    attack:
+      - id: "T1046"
+        name: "Network Service Discovery"
+
+  NMAP_UDP_SCAN:
+    family: "Reconnaissance"
+    capec:
+      - id: "CAPEC-308"
+        name: "UDP Scan"
+    attack:
+      - id: "T1046"
+        name: "Network Service Discovery"
+
+  NMAP_XMAS_TREE_SCAN:
+    family: "Reconnaissance"
+    capec:
+      - id: "CAPEC-303"
+        name: "TCP Xmas Scan"
+    attack:
+      - id: "T1046"
+        name: "Network Service Discovery"
+
+  NMAP_FIN_SCAN:
+    family: "Reconnaissance"
+    capec:
+      - id: "CAPEC-302"
+        name: "TCP FIN Scan"
+    attack:
+      - id: "T1046"
+        name: "Network Service Discovery"
+
+  NMAP_OS_DETECTION:
+    family: "Reconnaissance"
+    capec:
+      - id: "CAPEC-312"
+        name: "Active OS Fingerprinting"
+    attack:
+      - id: "T1082"
+        name: "System Information Discovery"
+      - id: "T1595"
+        name: "Active Scanning"
+
+  Metasploit_Brute_Force_SSH:
+    family: "Brute force"
+    capec:
+      - id: "CAPEC-49"
+        name: "Password Brute Forcing"
+    attack:
+      - id: "T1110.001"
+        name: "Password Guessing"
+      - id: "T1021.004"
+        name: "SSH"
+
+  Thing_Speak:
+    family: "Normal"
+    capec: []
+    attack: []
+
+  MQTT_Publish:
+    family: "Normal"
+    capec: []
+    attack: []
+
+  Wipro_bulb:
+    family: "Normal"
+    capec: []
+    attack: []
+
+# Shared Top-Level Attack Families across all datasets
+shared_families:
+  - "Normal"
+  - "DoS"
+  - "Reconnaissance"
+  - "Spoofing"
+  - "Brute force"
+  - "Web attack"
+  - "Botnet/Malware"
+  - "Other"

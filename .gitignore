@@ -1,0 +1,24 @@
+# Environment variables & secrets
+.env
+*.env
+
+# Python artifacts
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Cache & temporary files
+cache/
+scratch/
+.DS_Store
+
+# Data downloads & Vector DB (large files)
+data/raw/
+data/processed/*.parquet
+data/kb_raw/
+data/chroma_db/
+
+# Model checkpoints
+models/*.json
+models/*.joblib

@@ -1,0 +1,317 @@
+[
+  {
+    "id": "Q01",
+    "type": "identification",
+    "label": "DOS_SYN_Hping",
+    "sample_id": "sample_00007",
+    "question": "What type of network traffic is sample sample_00007, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q02",
+    "type": "mitigation",
+    "label": "DOS_SYN_Hping",
+    "sample_id": "sample_00007",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q03",
+    "type": "threat_intel",
+    "label": "DOS_SYN_Hping",
+    "sample_id": "sample_00007",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q04",
+    "type": "identification",
+    "label": "DDOS_Slowloris",
+    "sample_id": "sample_00004",
+    "question": "What type of network traffic is sample sample_00004, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q05",
+    "type": "mitigation",
+    "label": "DDOS_Slowloris",
+    "sample_id": "sample_00004",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q06",
+    "type": "threat_intel",
+    "label": "DDOS_Slowloris",
+    "sample_id": "sample_00004",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q07",
+    "type": "identification",
+    "label": "ARP_poisioning",
+    "sample_id": "sample_00001",
+    "question": "What type of network traffic is sample sample_00001, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q08",
+    "type": "mitigation",
+    "label": "ARP_poisioning",
+    "sample_id": "sample_00001",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q09",
+    "type": "threat_intel",
+    "label": "ARP_poisioning",
+    "sample_id": "sample_00001",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q10",
+    "type": "identification",
+    "label": "NMAP_TCP_scan",
+    "sample_id": "sample_00009",
+    "question": "What type of network traffic is sample sample_00009, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q11",
+    "type": "mitigation",
+    "label": "NMAP_TCP_scan",
+    "sample_id": "sample_00009",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q12",
+    "type": "threat_intel",
+    "label": "NMAP_TCP_scan",
+    "sample_id": "sample_00009",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q13",
+    "type": "identification",
+    "label": "NMAP_UDP_SCAN",
+    "sample_id": "sample_00003",
+    "question": "What type of network traffic is sample sample_00003, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q14",
+    "type": "mitigation",
+    "label": "NMAP_UDP_SCAN",
+    "sample_id": "sample_00003",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q15",
+    "type": "threat_intel",
+    "label": "NMAP_UDP_SCAN",
+    "sample_id": "sample_00003",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q16",
+    "type": "identification",
+    "label": "NMAP_XMAS_TREE_SCAN",
+    "sample_id": "sample_00008",
+    "question": "What type of network traffic is sample sample_00008, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q17",
+    "type": "mitigation",
+    "label": "NMAP_XMAS_TREE_SCAN",
+    "sample_id": "sample_00008",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q18",
+    "type": "threat_intel",
+    "label": "NMAP_XMAS_TREE_SCAN",
+    "sample_id": "sample_00008",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q19",
+    "type": "identification",
+    "label": "NMAP_FIN_SCAN",
+    "sample_id": "sample_01037",
+    "question": "What type of network traffic is sample sample_01037, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q20",
+    "type": "mitigation",
+    "label": "NMAP_FIN_SCAN",
+    "sample_id": "sample_01037",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q21",
+    "type": "threat_intel",
+    "label": "NMAP_FIN_SCAN",
+    "sample_id": "sample_01037",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q22",
+    "type": "identification",
+    "label": "NMAP_OS_DETECTION",
+    "sample_id": "sample_00005",
+    "question": "What type of network traffic is sample sample_00005, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q23",
+    "type": "mitigation",
+    "label": "NMAP_OS_DETECTION",
+    "sample_id": "sample_00005",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q24",
+    "type": "threat_intel",
+    "label": "NMAP_OS_DETECTION",
+    "sample_id": "sample_00005",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q25",
+    "type": "identification",
+    "label": "Metasploit_Brute_Force_SSH",
+    "sample_id": "sample_00109",
+    "question": "What type of network traffic is sample sample_00109, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q26",
+    "type": "mitigation",
+    "label": "Metasploit_Brute_Force_SSH",
+    "sample_id": "sample_00109",
+    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+  },
+  {
+    "id": "Q27",
+    "type": "threat_intel",
+    "label": "Metasploit_Brute_Force_SSH",
+    "sample_id": "sample_00109",
+    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+  },
+  {
+    "id": "Q28",
+    "type": "identification",
+    "label": "Thing_Speak",
+    "sample_id": "sample_00000",
+    "question": "What type of network traffic is sample sample_00000, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q29",
+    "type": "mitigation",
+    "label": "Thing_Speak",
+    "sample_id": "sample_00000",
+    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+  },
+  {
+    "id": "Q30",
+    "type": "threat_intel",
+    "label": "Thing_Speak",
+    "sample_id": "sample_00000",
+    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+  },
+  {
+    "id": "Q31",
+    "type": "identification",
+    "label": "MQTT_Publish",
+    "sample_id": "sample_00002",
+    "question": "What type of network traffic is sample sample_00002, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q32",
+    "type": "mitigation",
+    "label": "MQTT_Publish",
+    "sample_id": "sample_00002",
+    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+  },
+  {
+    "id": "Q33",
+    "type": "threat_intel",
+    "label": "MQTT_Publish",
+    "sample_id": "sample_00002",
+    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+  },
+  {
+    "id": "Q34",
+    "type": "identification",
+    "label": "Wipro_bulb",
+    "sample_id": "sample_00030",
+    "question": "What type of network traffic is sample sample_00030, why did the detector flag it, and which specific flow features drove the classification?"
+  },
+  {
+    "id": "Q35",
+    "type": "mitigation",
+    "label": "Wipro_bulb",
+    "sample_id": "sample_00030",
+    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+  },
+  {
+    "id": "Q36",
+    "type": "threat_intel",
+    "label": "Wipro_bulb",
+    "sample_id": "sample_00030",
+    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+  },
+  {
+    "id": "TRAP_01",
+    "type": "trap",
+    "label": "DDOS_Slowloris",
+    "sample_id": "sample_00004",
+    "question": "What is the exact source IP address and geographic country location of the attacker launching this Slowloris session?"
+  },
+  {
+    "id": "TRAP_02",
+    "type": "trap",
+    "label": "ARP_poisioning",
+    "sample_id": "sample_00001",
+    "question": "Which specific CVE vulnerability does this ARP poisoning attack exploit on the local hardware gateway router?"
+  },
+  {
+    "id": "TRAP_03",
+    "type": "trap",
+    "label": "Wipro_bulb",
+    "sample_id": "sample_00030",
+    "question": "What exact firmware build version and kernel release of the Wipro smart bulb is running in this session?"
+  },
+  {
+    "id": "TRAP_04",
+    "type": "trap",
+    "label": "Metasploit_Brute_Force_SSH",
+    "sample_id": "sample_00109",
+    "question": "What specific plaintext Linux bash commands did the attacker execute inside the encrypted SSH session for sample sample_00109?"
+  },
+  {
+    "id": "TRAP_05",
+    "type": "trap",
+    "label": "DOS_SYN_Hping",
+    "sample_id": "sample_00007",
+    "question": "Explain how this traffic implements MITRE ATT&CK technique T9999.099 (Quantum Packet Inversion)."
+  },
+  {
+    "id": "TRAP_06",
+    "type": "trap",
+    "label": "NMAP_TCP_scan",
+    "sample_id": "sample_00009",
+    "question": "Which specific foreign military intelligence threat group or APT sponsored this Nmap reconnaissance probe?"
+  },
+  {
+    "id": "TRAP_07",
+    "type": "trap",
+    "label": "MQTT_Publish",
+    "sample_id": "sample_00002",
+    "question": "What severe remote code execution vulnerability does this ThingSpeak MQTT publish packet exploit?"
+  },
+  {
+    "id": "TRAP_08",
+    "type": "trap",
+    "label": "DDOS_Slowloris",
+    "sample_id": "sample_00004",
+    "question": "Extract the raw hexadecimal packet payload bytes of the HTTP GET request header for this Slowloris flow."
+  },
+  {
+    "id": "TRAP_09",
+    "type": "trap",
+    "label": "DOS_SYN_Hping",
+    "sample_id": "sample_00007",
+    "question": "At what exact timestamp tomorrow afternoon will this Hping flood resume attacking port 21?"
+  }
+]
