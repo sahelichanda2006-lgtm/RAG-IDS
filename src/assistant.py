@@ -1,271 +1,200 @@
 """
-Incident Response Assistant for RAG-IDS.
-Implements both the Fixed Pipeline (detect -> retrieve -> grounded answer)
-and Tool-Calling Mode (LLM executes detector and search tools autonomously).
+Milestones 4 and 7 - the assistant.
+
+    python -m src.assistant --sample sample_00004 "What is this traffic and why was it flagged?"
+    python -m src.assistant --sample sample_00004 --no-retrieval "..."   # condition A
+    python -m src.assistant --sample sample_00004 --mode tool "..."      # tool calling
+    python -m src.assistant "What is a TCP Xmas scan?"                    # general question
+
+Fixed pipeline (always works):
+    sample -> detect() -> retrieve() -> LLM -> answer
+
+Tool-calling mode: the LLM decides when to call
+    run_detector(sample_id)   and   search_knowledge(query)
+one call at a time, at most four per question. On any error it falls back to
+the fixed pipeline automatically, and the reason is logged and returned.
 """
 
-import sys
+import argparse
 import json
 import logging
-import argparse
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-import pandas as pd
+from src import prompts
+from src.config import DEFAULT_DATASET, get_dataset_config
+from src.detector import detect, load_test_sample
+from src.llm_client import DailyLimitReached, chat
+from src.retriever import format_detection, retrieve
 
-from src.config import PROJECT_ROOT, get_dataset_config
-from src.detector import detect
-from src.retriever import retrieve_threat_evidence
-from src.llm_client import query_llm
-from src.prompts import GROUNDED_SYSTEM_PROMPT, NO_RETRIEVAL_SYSTEM_PROMPT
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("assistant")
 
-# Global test data cache
-_GLOBAL_TEST_DF = None
+MAX_TOOL_CALLS = 4
+SEARCH_TOOL_CHUNKS = 4
 
-
-def get_test_sample(sample_id: str) -> Optional[pd.Series]:
-    """Retrieve sample row by persistent sample ID from test partition."""
-    global _GLOBAL_TEST_DF
-    if _GLOBAL_TEST_DF is None:
-        config = get_dataset_config("rt_iot2022")
-        test_path = PROJECT_ROOT / config["processed_test_path"]
-        _GLOBAL_TEST_DF = pd.read_parquet(test_path).set_index("sample_id", drop=False)
-
-    if sample_id in _GLOBAL_TEST_DF.index:
-        return _GLOBAL_TEST_DF.loc[sample_id]
-    return None
-
-
-# Tool definitions for OpenAI tool calling
-TOOL_DEFINITIONS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "run_detector",
-            "description": "Run the machine learning intrusion detector on a network flow sample by its sample ID to identify attacks, confidence, and top driving features.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "sample_id": {
-                        "type": "string",
-                        "description": "The unique sample ID of the traffic flow to inspect (e.g., 'sample_00004').",
-                    }
-                },
-                "required": ["sample_id"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "search_knowledge",
-            "description": "Perform semantic search across the threat knowledge base (MITRE ATT&CK, CAPEC, NVD CVEs, label cards).",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "The cybersecurity technical search query (e.g., 'Slowloris Apache mitigation' or 'TCP SYN flood').",
-                    }
-                },
-                "required": ["query"],
-            },
-        },
-    },
+TOOLS = [
+    {"type": "function", "function": {
+        "name": "run_detector",
+        "description": "Run the intrusion detector on one traffic sample from the test pool. "
+                       "Returns the predicted label, confidence and the most important flow features.",
+        "parameters": {"type": "object", "properties": {
+            "sample_id": {"type": "string", "description": "Sample ID such as 'sample_00004'."}},
+            "required": ["sample_id"]}}},
+    {"type": "function", "function": {
+        "name": "search_knowledge",
+        "description": "Search the threat knowledge base (MITRE ATT&CK, CAPEC, CVE records, label cards, "
+                       "feature glossary). Returns tagged entries.",
+        "parameters": {"type": "object", "properties": {
+            "query": {"type": "string", "description": "What to look for, in plain words."}},
+            "required": ["query"]}}},
 ]
 
 
-def execute_tool_call(tool_name: str, args: Dict[str, Any]) -> str:
-    """Execute local function corresponding to LLM tool call."""
-    if tool_name == "run_detector":
-        sample_id = args.get("sample_id")
-        sample = get_test_sample(sample_id)
-        if sample is None:
-            return json.dumps({"error": f"Sample ID '{sample_id}' not found in test pool."})
-        det_res = detect(sample)
-        return json.dumps(det_res)
-
-    elif tool_name == "search_knowledge":
-        q = args.get("query", "")
-        ret_res = retrieve_threat_evidence(query=q, max_chunks=3)
-        return ret_res["formatted_evidence"]
-
-    return json.dumps({"error": f"Unknown tool: {tool_name}"})
+# ---------------------------------------------------------------------------
+# Fixed pipeline
+# ---------------------------------------------------------------------------
+def run_detection(sample_id: Optional[str], dataset: str) -> Optional[Dict[str, Any]]:
+    if not sample_id:
+        return None
+    row = load_test_sample(sample_id, dataset)
+    if row is None:
+        raise ValueError(f"Sample '{sample_id}' is not in the {dataset} test pool.")
+    return detect(row, dataset)
 
 
-def ask_assistant(
-    question: str,
-    sample_id: Optional[str] = None,
-    retrieval_enabled: bool = True,
-    mode: str = "fixed",
-    use_cache: bool = True,
-) -> Dict[str, Any]:
-    """
-    Core entrypoint for the RAG-IDS assistant.
-    Supports fixed pipeline and tool-calling modes, with or without retrieval.
-    """
-    detection_result = None
-    retrieval_result = None
-
-    sample = None
-    if sample_id:
-        sample = get_test_sample(sample_id)
-        if sample is not None:
-            detection_result = detect(sample)
-
-    # Mode 1: Tool-Calling Mode
-    if mode == "tool" and retrieval_enabled:
-        try:
-            logger.info("Executing assistant in Tool-Calling mode...")
-            messages = [
-                {
-                    "role": "system",
-                    "content": GROUNDED_SYSTEM_PROMPT
-                    + "\nYou have access to run_detector(sample_id) and search_knowledge(query). Use them to collect evidence before answering.",
-                },
-                {
-                    "role": "user",
-                    "content": f"Traffic Sample ID: {sample_id}\n\nQuestion: {question}",
-                },
-            ]
-
-            max_turns = 4
-            for _ in range(max_turns):
-                res = query_llm(
-                    "answering",
-                    messages,
-                    tools=TOOL_DEFINITIONS,
-                    temperature=0.0,
-                    use_cache=use_cache,
-                )
-                msg = res["choices"][0]["message"]
-                tool_calls = msg.get("tool_calls")
-
-                if not tool_calls:
-                    # Final textual answer reached
-                    return {
-                        "answer": msg.get("content", ""),
-                        "detection": detection_result,
-                        "retrieval": retrieval_result,
-                        "mode": "tool",
-                        "retrieval_enabled": True,
-                    }
-
-                # Single tool call per turn as per prompt constraints
-                tool_call = tool_calls[0]
-                t_id = tool_call["id"]
-                t_name = tool_call["function"]["name"]
-                t_args = json.loads(tool_call["function"].get("arguments", "{}"))
-
-                # Execute tool
-                tool_output = execute_tool_call(t_name, t_args)
-
-                # Append assistant message and tool response
-                messages.append(
-                    {
-                        "role": "assistant",
-                        "content": None,
-                        "tool_calls": [tool_call],
-                    }
-                )
-                messages.append(
-                    {
-                        "role": "tool",
-                        "tool_call_id": t_id,
-                        "name": t_name,
-                        "content": tool_output,
-                    }
-                )
-
-        except Exception as e:
-            logger.warning(f"Tool-calling error ({e}). Gracefully falling back to Fixed Pipeline...")
-            mode = "fixed"
-
-    # Mode 2: Fixed Pipeline (Always reliable)
-    if retrieval_enabled:
-        system_prompt = GROUNDED_SYSTEM_PROMPT
-        retrieval_result = retrieve_threat_evidence(
-            query=question, detection_result=detection_result
-        )
-        user_content = (
-            f"{retrieval_result['formatted_evidence']}\n\n"
-            f"USER QUESTION: {question}\n\n"
-            f"Provide your grounded incident response explanation following all citation rules:"
-        )
+def build_messages(question: str, det: Optional[Dict[str, Any]], use_retrieval: bool):
+    """The exact messages sent to the answering model, plus the evidence used.
+    Shared by the app and the evaluation, so both conditions are built identically."""
+    if use_retrieval:
+        r = retrieve(question, det)
+        user = prompts.USER_TEMPLATE_WITH_EVIDENCE.format(evidence=r["evidence_text"], question=question)
+        system = prompts.GROUNDED_SYSTEM
+        chunks, warnings = r["chunks"], r["warnings"]
     else:
-        # Condition A: No Retrieval (Telemetry only)
-        system_prompt = NO_RETRIEVAL_SYSTEM_PROMPT
-        det_block = ""
-        if detection_result:
-            det_block = (
-                f"### [DET: Detector Telemetry]\n"
-                f"- Predicted Label: {detection_result['predicted_label']}\n"
-                f"- Attack Family: {detection_result['attack_family']}\n"
-                f"- Confidence: {detection_result['confidence']:.2%}\n"
-                f"- Top Features: {', '.join([f'{tf['feature']}={tf['value']}' for tf in detection_result['top_features']])}\n\n"
-            )
-        user_content = f"{det_block}USER QUESTION: {question}"
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_content},
-    ]
-
-    res = query_llm(
-        "answering", messages, temperature=0.0, use_cache=use_cache
-    )
-    answer = res["choices"][0]["message"].get("content", "")
-
-    return {
-        "answer": answer,
-        "detection": detection_result,
-        "retrieval": retrieval_result,
-        "mode": "fixed",
-        "retrieval_enabled": retrieval_enabled,
-    }
+        det_text = format_detection(det) if det else "[DET] No traffic sample was given."
+        user = prompts.USER_TEMPLATE_DET_ONLY.format(det=det_text, question=question)
+        system = prompts.NO_RETRIEVAL_SYSTEM
+        chunks, warnings = [], []
+    messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
+    return messages, chunks, warnings
 
 
-def main():
-    parser = argparse.ArgumentParser(description="RAG-IDS CLI Assistant")
-    parser.add_argument("--sample-id", type=str, default="sample_00004", help="Sample ID to inspect")
-    parser.add_argument("--question", type=str, default="What attack is this and how should I stop it?", help="Analyst query")
-    parser.add_argument("--no-retrieval", action="store_true", help="Disable RAG retrieval (Condition A)")
-    parser.add_argument("--mode", type=str, default="fixed", choices=["fixed", "tool"], help="Assistant mode")
+def build_raw_feature_messages(question: str, row, dataset: str = DEFAULT_DATASET):
+    """Evaluation condition C: the flow's raw feature values, no detector output and no
+    retrieval. Shows what the detector contributes."""
+    cfg = get_dataset_config(dataset)
+    skip = set(cfg.get("drop_columns", [])) | {cfg["label_column"], "sample_id"}
+    features = "\n".join(f"{k} = {v}" for k, v in row.items() if k not in skip)
+    user = prompts.USER_TEMPLATE_RAW.format(features=features, question=question)
+    return [{"role": "system", "content": prompts.RAW_FEATURES_SYSTEM}, {"role": "user", "content": user}]
 
-    args = parser.parse_args()
 
-    print("\n" + "=" * 75)
-    print("RAG-IDS INCIDENT RESPONSE ASSISTANT (CLI)")
-    print("=" * 75)
-    print(f"Sample ID:  {args.sample_id}")
-    print(f"Retrieval:  {'DISABLED (Condition A)' if args.no_retrieval else 'ENABLED (Condition B)'}")
-    print(f"Mode:       {args.mode}")
-    print(f"Question:   {args.question}\n")
+def answer_fixed(question: str, sample_id: Optional[str] = None, dataset: str = DEFAULT_DATASET,
+                 use_retrieval: bool = True) -> Dict[str, Any]:
+    det = run_detection(sample_id, dataset)
+    messages, chunks, warnings = build_messages(question, det, use_retrieval)
+    res = chat("answering", messages)
+    return {"answer": res["content"], "mode": "fixed", "retrieval": use_retrieval, "detection": det,
+            "evidence_chunks": chunks, "warnings": warnings, "model": res["model"],
+            "usage": res["usage"], "cached": res["cached"], "tool_trace": [], "fallback_reason": None}
 
-    res = ask_assistant(
-        question=args.question,
-        sample_id=args.sample_id,
-        retrieval_enabled=not args.no_retrieval,
-        mode=args.mode,
-    )
 
-    if res["detection"]:
-        d = res["detection"]
-        print(f"DETECTOR VERDICT: {d['predicted_label']} ({d['attack_family']}) - Confidence: {d['confidence']:.2%}")
-        print("Top Features:")
-        for tf in d["top_features"]:
-            print(f"  - {tf['feature']} = {tf['value']} (Contrib: {tf['contribution']:+.4f})")
-        print()
+# ---------------------------------------------------------------------------
+# Tool-calling mode
+# ---------------------------------------------------------------------------
+def answer_with_tools(question: str, sample_id: Optional[str] = None,
+                      dataset: str = DEFAULT_DATASET) -> Dict[str, Any]:
+    """Let the LLM call the tools itself. Falls back to the fixed pipeline on any error."""
+    try:
+        return _tool_loop(question, sample_id, dataset)
+    except DailyLimitReached:
+        raise
+    except Exception as e:  # noqa: BLE001 - any failure -> fixed pipeline, as specified
+        reason = f"{type(e).__name__}: {e}"
+        logger.warning("Tool calling failed (%s); falling back to the fixed pipeline.", reason)
+        out = answer_fixed(question, sample_id, dataset, use_retrieval=True)
+        out["fallback_reason"] = reason
+        return out
 
-    print("-" * 75)
-    print("ASSISTANT RESPONSE:")
-    print("-" * 75)
-    print(res["answer"])
-    print("-" * 75 + "\n")
+
+def _tool_loop(question, sample_id, dataset) -> Dict[str, Any]:
+    user = f"Traffic sample ID: {sample_id}\n\nQUESTION: {question}" if sample_id else f"QUESTION: {question}"
+    messages: List[Dict[str, Any]] = [{"role": "system", "content": prompts.TOOL_SYSTEM},
+                                      {"role": "user", "content": user}]
+    det, chunks, trace, seen = None, [], [], set()
+
+    for _ in range(MAX_TOOL_CALLS):
+        res = chat("answering", messages, tools=TOOLS)
+        if not res["tool_calls"]:
+            return _tool_result(res, det, chunks, trace)
+        call = res["tool_calls"][0]            # one call at a time
+        if len(res["tool_calls"]) > 1:
+            logger.info("Model asked for %d tool calls at once; running only the first.", len(res["tool_calls"]))
+        name = call["function"]["name"]
+        args = json.loads(call["function"].get("arguments") or "{}")
+
+        if name == "run_detector":
+            try:
+                det = run_detection(args.get("sample_id"), dataset)
+                output = format_detection(det)
+            except ValueError as e:
+                output = f"ERROR: {e}"
+        elif name == "search_knowledge":
+            # Uses the same retrieval as the fixed pipeline, so once the detector
+            # has run, the label lookup is included too.
+            r = retrieve(args.get("query", ""), det, max_chunks=SEARCH_TOOL_CHUNKS)
+            new = [c for c in r["chunks"] if c["chunk_id"] not in seen]
+            seen.update(c["chunk_id"] for c in new)
+            chunks.extend(new)
+            output = "\n\n".join(c["text"] for c in r["chunks"]) or "No matching entries."
+        else:
+            raise ValueError(f"Model called an unknown tool '{name}'")
+        trace.append({"tool": name, "arguments": args})
+        messages.append({"role": "assistant", "content": res["content"] or None,
+                         "tool_calls": [{"id": call["id"], "type": "function",
+                                         "function": {"name": name, "arguments": call["function"]["arguments"]}}]})
+        messages.append({"role": "tool", "tool_call_id": call["id"], "content": output})
+
+    # Tool budget used up: ask for the final answer. The tools stay listed (some APIs
+    # reject tool messages without them) but tool_choice="none" forbids calling them.
+    messages.append({"role": "user", "content": "You have used all tool calls. Write the final answer now "
+                                                "from the evidence you have."})
+    res = chat("answering", messages, tools=TOOLS, tool_choice="none")
+    return _tool_result(res, det, chunks, trace)
+
+
+def _tool_result(res, det, chunks, trace) -> Dict[str, Any]:
+    return {"answer": res["content"], "mode": "tool", "retrieval": True, "detection": det,
+            "evidence_chunks": chunks, "warnings": [], "model": res["model"], "usage": res["usage"],
+            "cached": res["cached"], "tool_trace": trace, "fallback_reason": None}
+
+
+def answer(question: str, sample_id: Optional[str] = None, dataset: str = DEFAULT_DATASET,
+           use_retrieval: bool = True, mode: str = "fixed") -> Dict[str, Any]:
+    """Entry point for the app. Tool mode always uses retrieval."""
+    if mode == "tool" and use_retrieval:
+        return answer_with_tools(question, sample_id, dataset)
+    return answer_fixed(question, sample_id, dataset, use_retrieval)
 
 
 if __name__ == "__main__":
-    main()
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("question")
+    ap.add_argument("--sample", help="test-set sample ID, e.g. sample_00004")
+    ap.add_argument("--dataset", default=DEFAULT_DATASET)
+    ap.add_argument("--no-retrieval", action="store_true", help="condition A: detector output only")
+    ap.add_argument("--mode", choices=["fixed", "tool"], default="fixed")
+    a = ap.parse_args()
+
+    out = answer(a.question, a.sample, a.dataset, not a.no_retrieval, a.mode)
+    if out["detection"]:
+        print(format_detection(out["detection"]), "\n")
+    if out["evidence_chunks"]:
+        print("Evidence used:", ", ".join(c["chunk_id"] for c in out["evidence_chunks"]))
+    if out["tool_trace"]:
+        print("Tool calls:", out["tool_trace"])
+    if out["fallback_reason"]:
+        print("FELL BACK to the fixed pipeline because:", out["fallback_reason"])
+    print("\n" + "-" * 70 + "\n" + out["answer"] + "\n" + "-" * 70)
+    print(f"model={out['model']} tokens={out['usage'].get('total_tokens')} cached={out['cached']}")

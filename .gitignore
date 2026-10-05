@@ -1,24 +1,24 @@
-# Environment variables & secrets
+# Secrets - NEVER commit
 .env
-*.env
 
-# Python artifacts
+# Python
 .venv/
 __pycache__/
 *.pyc
-*.pyo
 
-# Cache & temporary files
+# LLM response cache, call log, NVD lookups (personal, regenerable)
 cache/
-scratch/
-.DS_Store
 
-# Data downloads & Vector DB (large files)
+# Large or regenerable data (comments must be on their own line in .gitignore)
+# - RT-IoT2022 CSV, downloaded by src.data_loader
 data/raw/
-data/processed/*.parquet
+# - train/test split, rebuilt by src.data_loader
+data/processed/*/*.parquet
+# - MITRE/CAPEC/NVD downloads; versions + dates are kept in data/kb/kb_sources_manifest.json
 data/kb_raw/
+# - built by src.kb_builder
+data/kb/chunks.json
+data/kb/id_registry.json
 data/chroma_db/
-
-# Model checkpoints
-models/*.json
-models/*.joblib
+# - trained detector, rebuilt by src.detector
+models/
