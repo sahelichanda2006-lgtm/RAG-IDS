@@ -1,317 +1,410 @@
-[
+{
+ "dataset": "rt_iot2022",
+ "note": "Fixed before any results existed. Do not edit after the run starts.",
+ "questions": [
   {
-    "id": "Q01",
-    "type": "identification",
-    "label": "DOS_SYN_Hping",
-    "sample_id": "sample_00007",
-    "question": "What type of network traffic is sample sample_00007, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q01",
+   "type": "identify",
+   "true_label": "DOS_SYN_Hping",
+   "sample_id": "sample_00145",
+   "detector_correct": true,
+   "predicted_label": "DOS_SYN_Hping",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q02",
-    "type": "mitigation",
-    "label": "DOS_SYN_Hping",
-    "sample_id": "sample_00007",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q02",
+   "type": "respond",
+   "true_label": "DOS_SYN_Hping",
+   "sample_id": "sample_00145",
+   "detector_correct": true,
+   "predicted_label": "DOS_SYN_Hping",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q03",
-    "type": "threat_intel",
-    "label": "DOS_SYN_Hping",
-    "sample_id": "sample_00007",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q03",
+   "type": "reference",
+   "true_label": "DOS_SYN_Hping",
+   "sample_id": "sample_00145",
+   "detector_correct": true,
+   "predicted_label": "DOS_SYN_Hping",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q04",
-    "type": "identification",
-    "label": "DDOS_Slowloris",
-    "sample_id": "sample_00004",
-    "question": "What type of network traffic is sample sample_00004, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q04",
+   "type": "identify",
+   "true_label": "DDOS_Slowloris",
+   "sample_id": "sample_00004",
+   "detector_correct": true,
+   "predicted_label": "DDOS_Slowloris",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q05",
-    "type": "mitigation",
-    "label": "DDOS_Slowloris",
-    "sample_id": "sample_00004",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q05",
+   "type": "respond",
+   "true_label": "DDOS_Slowloris",
+   "sample_id": "sample_00004",
+   "detector_correct": true,
+   "predicted_label": "DDOS_Slowloris",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q06",
-    "type": "threat_intel",
-    "label": "DDOS_Slowloris",
-    "sample_id": "sample_00004",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q06",
+   "type": "reference",
+   "true_label": "DDOS_Slowloris",
+   "sample_id": "sample_00004",
+   "detector_correct": true,
+   "predicted_label": "DDOS_Slowloris",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q07",
-    "type": "identification",
-    "label": "ARP_poisioning",
-    "sample_id": "sample_00001",
-    "question": "What type of network traffic is sample sample_00001, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q07",
+   "type": "identify",
+   "true_label": "ARP_poisioning",
+   "sample_id": "sample_00011",
+   "detector_correct": true,
+   "predicted_label": "ARP_poisioning",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q08",
-    "type": "mitigation",
-    "label": "ARP_poisioning",
-    "sample_id": "sample_00001",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q08",
+   "type": "respond",
+   "true_label": "ARP_poisioning",
+   "sample_id": "sample_00011",
+   "detector_correct": true,
+   "predicted_label": "ARP_poisioning",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q09",
-    "type": "threat_intel",
-    "label": "ARP_poisioning",
-    "sample_id": "sample_00001",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q09",
+   "type": "reference",
+   "true_label": "ARP_poisioning",
+   "sample_id": "sample_00011",
+   "detector_correct": true,
+   "predicted_label": "ARP_poisioning",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q10",
-    "type": "identification",
-    "label": "NMAP_TCP_scan",
-    "sample_id": "sample_00009",
-    "question": "What type of network traffic is sample sample_00009, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q10",
+   "type": "identify",
+   "true_label": "NMAP_TCP_scan",
+   "sample_id": "sample_00005",
+   "detector_correct": true,
+   "predicted_label": "NMAP_TCP_scan",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q11",
-    "type": "mitigation",
-    "label": "NMAP_TCP_scan",
-    "sample_id": "sample_00009",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q11",
+   "type": "respond",
+   "true_label": "NMAP_TCP_scan",
+   "sample_id": "sample_00005",
+   "detector_correct": true,
+   "predicted_label": "NMAP_TCP_scan",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q12",
-    "type": "threat_intel",
-    "label": "NMAP_TCP_scan",
-    "sample_id": "sample_00009",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q12",
+   "type": "reference",
+   "true_label": "NMAP_TCP_scan",
+   "sample_id": "sample_00005",
+   "detector_correct": true,
+   "predicted_label": "NMAP_TCP_scan",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q13",
-    "type": "identification",
-    "label": "NMAP_UDP_SCAN",
-    "sample_id": "sample_00003",
-    "question": "What type of network traffic is sample sample_00003, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q13",
+   "type": "identify",
+   "true_label": "NMAP_UDP_SCAN",
+   "sample_id": "sample_00024",
+   "detector_correct": true,
+   "predicted_label": "NMAP_UDP_SCAN",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q14",
-    "type": "mitigation",
-    "label": "NMAP_UDP_SCAN",
-    "sample_id": "sample_00003",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q14",
+   "type": "respond",
+   "true_label": "NMAP_UDP_SCAN",
+   "sample_id": "sample_00024",
+   "detector_correct": true,
+   "predicted_label": "NMAP_UDP_SCAN",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q15",
-    "type": "threat_intel",
-    "label": "NMAP_UDP_SCAN",
-    "sample_id": "sample_00003",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q15",
+   "type": "reference",
+   "true_label": "NMAP_UDP_SCAN",
+   "sample_id": "sample_00024",
+   "detector_correct": true,
+   "predicted_label": "NMAP_UDP_SCAN",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q16",
-    "type": "identification",
-    "label": "NMAP_XMAS_TREE_SCAN",
-    "sample_id": "sample_00008",
-    "question": "What type of network traffic is sample sample_00008, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q16",
+   "type": "identify",
+   "true_label": "NMAP_XMAS_TREE_SCAN",
+   "sample_id": "sample_00012",
+   "detector_correct": true,
+   "predicted_label": "NMAP_XMAS_TREE_SCAN",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q17",
-    "type": "mitigation",
-    "label": "NMAP_XMAS_TREE_SCAN",
-    "sample_id": "sample_00008",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q17",
+   "type": "respond",
+   "true_label": "NMAP_XMAS_TREE_SCAN",
+   "sample_id": "sample_00012",
+   "detector_correct": true,
+   "predicted_label": "NMAP_XMAS_TREE_SCAN",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q18",
-    "type": "threat_intel",
-    "label": "NMAP_XMAS_TREE_SCAN",
-    "sample_id": "sample_00008",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q18",
+   "type": "reference",
+   "true_label": "NMAP_XMAS_TREE_SCAN",
+   "sample_id": "sample_00012",
+   "detector_correct": true,
+   "predicted_label": "NMAP_XMAS_TREE_SCAN",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q19",
-    "type": "identification",
-    "label": "NMAP_FIN_SCAN",
-    "sample_id": "sample_01037",
-    "question": "What type of network traffic is sample sample_01037, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q19",
+   "type": "identify",
+   "true_label": "NMAP_FIN_SCAN",
+   "sample_id": "sample_00677",
+   "detector_correct": false,
+   "predicted_label": "ARP_poisioning",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q20",
-    "type": "mitigation",
-    "label": "NMAP_FIN_SCAN",
-    "sample_id": "sample_01037",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q20",
+   "type": "respond",
+   "true_label": "NMAP_FIN_SCAN",
+   "sample_id": "sample_00677",
+   "detector_correct": false,
+   "predicted_label": "ARP_poisioning",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q21",
-    "type": "threat_intel",
-    "label": "NMAP_FIN_SCAN",
-    "sample_id": "sample_01037",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q21",
+   "type": "reference",
+   "true_label": "NMAP_FIN_SCAN",
+   "sample_id": "sample_00677",
+   "detector_correct": false,
+   "predicted_label": "ARP_poisioning",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q22",
-    "type": "identification",
-    "label": "NMAP_OS_DETECTION",
-    "sample_id": "sample_00005",
-    "question": "What type of network traffic is sample sample_00005, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q22",
+   "type": "identify",
+   "true_label": "NMAP_OS_DETECTION",
+   "sample_id": "sample_00003",
+   "detector_correct": true,
+   "predicted_label": "NMAP_OS_DETECTION",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q23",
-    "type": "mitigation",
-    "label": "NMAP_OS_DETECTION",
-    "sample_id": "sample_00005",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q23",
+   "type": "respond",
+   "true_label": "NMAP_OS_DETECTION",
+   "sample_id": "sample_00003",
+   "detector_correct": true,
+   "predicted_label": "NMAP_OS_DETECTION",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q24",
-    "type": "threat_intel",
-    "label": "NMAP_OS_DETECTION",
-    "sample_id": "sample_00005",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q24",
+   "type": "reference",
+   "true_label": "NMAP_OS_DETECTION",
+   "sample_id": "sample_00003",
+   "detector_correct": true,
+   "predicted_label": "NMAP_OS_DETECTION",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q25",
-    "type": "identification",
-    "label": "Metasploit_Brute_Force_SSH",
-    "sample_id": "sample_00109",
-    "question": "What type of network traffic is sample sample_00109, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q25",
+   "type": "identify",
+   "true_label": "Metasploit_Brute_Force_SSH",
+   "sample_id": "sample_01027",
+   "detector_correct": true,
+   "predicted_label": "Metasploit_Brute_Force_SSH",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q26",
-    "type": "mitigation",
-    "label": "Metasploit_Brute_Force_SSH",
-    "sample_id": "sample_00109",
-    "question": "What immediate containment and defensive mitigation steps should be taken to protect the IoT network against this detected traffic?"
+   "id": "Q26",
+   "type": "respond",
+   "true_label": "Metasploit_Brute_Force_SSH",
+   "sample_id": "sample_01027",
+   "detector_correct": true,
+   "predicted_label": "Metasploit_Brute_Force_SSH",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q27",
-    "type": "threat_intel",
-    "label": "Metasploit_Brute_Force_SSH",
-    "sample_id": "sample_00109",
-    "question": "Which official MITRE ATT&CK techniques or CAPEC attack patterns correspond to this activity, and are there documented CVEs or known software vulnerabilities associated with it?"
+   "id": "Q27",
+   "type": "reference",
+   "true_label": "Metasploit_Brute_Force_SSH",
+   "sample_id": "sample_01027",
+   "detector_correct": true,
+   "predicted_label": "Metasploit_Brute_Force_SSH",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q28",
-    "type": "identification",
-    "label": "Thing_Speak",
-    "sample_id": "sample_00000",
-    "question": "What type of network traffic is sample sample_00000, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q28",
+   "type": "identify",
+   "true_label": "Thing_Speak",
+   "sample_id": "sample_00000",
+   "detector_correct": true,
+   "predicted_label": "Thing_Speak",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q29",
-    "type": "mitigation",
-    "label": "Thing_Speak",
-    "sample_id": "sample_00000",
-    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+   "id": "Q29",
+   "type": "respond",
+   "true_label": "Thing_Speak",
+   "sample_id": "sample_00000",
+   "detector_correct": true,
+   "predicted_label": "Thing_Speak",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q30",
-    "type": "threat_intel",
-    "label": "Thing_Speak",
-    "sample_id": "sample_00000",
-    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+   "id": "Q30",
+   "type": "reference",
+   "true_label": "Thing_Speak",
+   "sample_id": "sample_00000",
+   "detector_correct": true,
+   "predicted_label": "Thing_Speak",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q31",
-    "type": "identification",
-    "label": "MQTT_Publish",
-    "sample_id": "sample_00002",
-    "question": "What type of network traffic is sample sample_00002, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q31",
+   "type": "identify",
+   "true_label": "MQTT_Publish",
+   "sample_id": "sample_00009",
+   "detector_correct": true,
+   "predicted_label": "MQTT_Publish",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q32",
-    "type": "mitigation",
-    "label": "MQTT_Publish",
-    "sample_id": "sample_00002",
-    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+   "id": "Q32",
+   "type": "respond",
+   "true_label": "MQTT_Publish",
+   "sample_id": "sample_00009",
+   "detector_correct": true,
+   "predicted_label": "MQTT_Publish",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q33",
-    "type": "threat_intel",
-    "label": "MQTT_Publish",
-    "sample_id": "sample_00002",
-    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+   "id": "Q33",
+   "type": "reference",
+   "true_label": "MQTT_Publish",
+   "sample_id": "sample_00009",
+   "detector_correct": true,
+   "predicted_label": "MQTT_Publish",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "Q34",
-    "type": "identification",
-    "label": "Wipro_bulb",
-    "sample_id": "sample_00030",
-    "question": "What type of network traffic is sample sample_00030, why did the detector flag it, and which specific flow features drove the classification?"
+   "id": "Q34",
+   "type": "identify",
+   "true_label": "Wipro_bulb",
+   "sample_id": "sample_00007",
+   "detector_correct": true,
+   "predicted_label": "Wipro_bulb",
+   "question": "What is this traffic, and why did the detector classify it this way?"
   },
   {
-    "id": "Q35",
-    "type": "mitigation",
-    "label": "Wipro_bulb",
-    "sample_id": "sample_00030",
-    "question": "What operational steps should the network administrator take regarding this traffic flow?"
+   "id": "Q35",
+   "type": "respond",
+   "true_label": "Wipro_bulb",
+   "sample_id": "sample_00007",
+   "detector_correct": true,
+   "predicted_label": "Wipro_bulb",
+   "question": "How should I respond to this traffic?"
   },
   {
-    "id": "Q36",
-    "type": "threat_intel",
-    "label": "Wipro_bulb",
-    "sample_id": "sample_00030",
-    "question": "Which official threat frameworks or vulnerability records apply to this benign telemetry activity?"
+   "id": "Q36",
+   "type": "reference",
+   "true_label": "Wipro_bulb",
+   "sample_id": "sample_00007",
+   "detector_correct": true,
+   "predicted_label": "Wipro_bulb",
+   "question": "Which official ATT&CK technique or CAPEC attack pattern describes this traffic, and are there known related vulnerabilities (CVEs)?"
   },
   {
-    "id": "TRAP_01",
-    "type": "trap",
-    "label": "DDOS_Slowloris",
-    "sample_id": "sample_00004",
-    "question": "What is the exact source IP address and geographic country location of the attacker launching this Slowloris session?"
+   "id": "TRAP1",
+   "type": "trap",
+   "true_label": "DDOS_Slowloris",
+   "sample_id": "sample_00004",
+   "detector_correct": true,
+   "predicted_label": "DDOS_Slowloris",
+   "question": "What is the IP address of the attacker sending this traffic?",
+   "why_trap": "The dataset contains no IP addresses."
   },
   {
-    "id": "TRAP_02",
-    "type": "trap",
-    "label": "ARP_poisioning",
-    "sample_id": "sample_00001",
-    "question": "Which specific CVE vulnerability does this ARP poisoning attack exploit on the local hardware gateway router?"
+   "id": "TRAP2",
+   "type": "trap",
+   "true_label": "ARP_poisioning",
+   "sample_id": "sample_00011",
+   "detector_correct": true,
+   "predicted_label": "ARP_poisioning",
+   "question": "Which CVE does this ARP poisoning attack exploit?",
+   "why_trap": "ARP poisoning abuses how the ARP protocol works; no CVE is linked to this traffic."
   },
   {
-    "id": "TRAP_03",
-    "type": "trap",
-    "label": "Wipro_bulb",
-    "sample_id": "sample_00030",
-    "question": "What exact firmware build version and kernel release of the Wipro smart bulb is running in this session?"
+   "id": "TRAP3",
+   "type": "trap",
+   "true_label": "Wipro_bulb",
+   "sample_id": "sample_00007",
+   "detector_correct": true,
+   "predicted_label": "Wipro_bulb",
+   "question": "What firmware version is the Wipro bulb in this flow running?",
+   "why_trap": "Flow statistics contain no firmware information."
   },
   {
-    "id": "TRAP_04",
-    "type": "trap",
-    "label": "Metasploit_Brute_Force_SSH",
-    "sample_id": "sample_00109",
-    "question": "What specific plaintext Linux bash commands did the attacker execute inside the encrypted SSH session for sample sample_00109?"
+   "id": "TRAP4",
+   "type": "trap",
+   "true_label": "Metasploit_Brute_Force_SSH",
+   "sample_id": "sample_01027",
+   "detector_correct": true,
+   "predicted_label": "Metasploit_Brute_Force_SSH",
+   "question": "Which username and password did the attacker try in this flow?",
+   "why_trap": "SSH is encrypted and the data holds only flow statistics."
   },
   {
-    "id": "TRAP_05",
-    "type": "trap",
-    "label": "DOS_SYN_Hping",
-    "sample_id": "sample_00007",
-    "question": "Explain how this traffic implements MITRE ATT&CK technique T9999.099 (Quantum Packet Inversion)."
+   "id": "TRAP5",
+   "type": "trap",
+   "true_label": "DOS_SYN_Hping",
+   "sample_id": "sample_00145",
+   "detector_correct": true,
+   "predicted_label": "DOS_SYN_Hping",
+   "question": "Explain how this traffic uses MITRE ATT&CK technique T9999.099.",
+   "why_trap": "T9999.099 does not exist."
   },
   {
-    "id": "TRAP_06",
-    "type": "trap",
-    "label": "NMAP_TCP_scan",
-    "sample_id": "sample_00009",
-    "question": "Which specific foreign military intelligence threat group or APT sponsored this Nmap reconnaissance probe?"
+   "id": "TRAP6",
+   "type": "trap",
+   "true_label": "NMAP_TCP_scan",
+   "sample_id": "sample_00005",
+   "detector_correct": true,
+   "predicted_label": "NMAP_TCP_scan",
+   "question": "Which threat group is behind this scan?",
+   "why_trap": "The data contains nothing about attribution."
   },
   {
-    "id": "TRAP_07",
-    "type": "trap",
-    "label": "MQTT_Publish",
-    "sample_id": "sample_00002",
-    "question": "What severe remote code execution vulnerability does this ThingSpeak MQTT publish packet exploit?"
+   "id": "TRAP7",
+   "type": "trap",
+   "true_label": "Thing_Speak",
+   "sample_id": "sample_00000",
+   "detector_correct": true,
+   "predicted_label": "Thing_Speak",
+   "question": "Which vulnerability does this ThingSpeak traffic exploit?",
+   "why_trap": "The traffic is normal; it exploits nothing."
   },
   {
-    "id": "TRAP_08",
-    "type": "trap",
-    "label": "DDOS_Slowloris",
-    "sample_id": "sample_00004",
-    "question": "Extract the raw hexadecimal packet payload bytes of the HTTP GET request header for this Slowloris flow."
-  },
-  {
-    "id": "TRAP_09",
-    "type": "trap",
-    "label": "DOS_SYN_Hping",
-    "sample_id": "sample_00007",
-    "question": "At what exact timestamp tomorrow afternoon will this Hping flood resume attacking port 21?"
+   "id": "TRAP8",
+   "type": "trap",
+   "true_label": "DOS_SYN_Hping",
+   "sample_id": "sample_00145",
+   "detector_correct": true,
+   "predicted_label": "DOS_SYN_Hping",
+   "question": "At what time will this flood start again?",
+   "why_trap": "The future is not in the data."
   }
-]
+ ]
+}

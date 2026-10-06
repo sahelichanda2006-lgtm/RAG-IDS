@@ -1,37 +1,31 @@
-# Dataset Configuration for CICIoT2023 (Extensible Second Dataset Roadmap)
-# Source: Canadian Institute for Cybersecurity (UNB)
-# Reference: https://www.unb.ca/cic/datasets/iotdataset-2023.html
-# 33 attacks across 7 core categories generated from 105 IoT devices.
+# Dataset configuration for CICIoT2023 - OPTIONAL MILESTONE 8, NOT BUILT YET.
+# Source: Canadian Institute for Cybersecurity, https://www.unb.ca/cic/datasets/iotdataset-2023.html
+# 33 attacks in 7 categories from 105 IoT devices; adds web attacks and Mirai botnet traffic.
+#
+# Not verified: the column names and label spellings below follow the dataset's
+# documentation and must be checked against the downloaded CSV files before use.
+# It is deliberately not active yet: without a "label_column" key the app and the
+# loaders ignore it. Rename "label_column_TODO" to "label_column" once the CSV sample exists.
 
 dataset_name: "CICIoT2023"
-raw_data_url: "https://www.unb.ca/cic/datasets/iotdataset-2023.html"
-raw_data_path: "data/raw/ciciot2023_sample.csv"
-processed_train_path: "data/processed/ciciot2023_train.parquet"
-processed_test_path: "data/processed/ciciot2023_test.parquet"
+citation: "Neto, E. C. P. et al. (2023). CICIoT2023: A real-time dataset and benchmark for large-scale attacks in IoT environment. Sensors 23(13), 5941."
 
-# Target label column in CICIoT2023
-label_column: "label"
+source:
+  # The full dataset is very large: download a few of its CSV files by hand from the
+  # CIC page, then build a stratified sample of 200,000-300,000 rows into local_csv.
+  local_csv: "data/raw/ciciot2023_sample.csv"
 
-# Ephemeral / non-generalizable columns to drop
-drop_columns:
-  - "Unnamed: 0"
-
-# Numerical flow statistics
-categorical_columns:
-  - "Protocol Type"
-
-# Split parameters
+label_column_TODO: "label"
+drop_columns: []
+port_columns: []          # CICIoT2023 has no port columns, so the leakage check is skipped
+categorical_columns: []   # "Protocol Type" is already numeric in CICIoT2023
 split:
   test_size: 0.20
   random_seed: 42
-  stratified: true
+dedup_before_split: true
 
-# Mapping all 33 CICIoT2023 attacks to the 8 Shared Attack Families
 label_to_family:
-  # Benign
   BenignTraffic: "Normal"
-
-  # DDoS
   DDoS-ICMP_Flood: "DoS"
   DDoS-UDP_Flood: "DoS"
   DDoS-TCP_Flood: "DoS"
@@ -39,41 +33,29 @@ label_to_family:
   DDoS-SYN_Flood: "DoS"
   DDoS-RSTFINFlood: "DoS"
   DDoS-SynonymousIP_Flood: "DoS"
-  DDoS-HTTP_Flood: "DoS"
-  DDoS-UDP_Fragmentation: "DoS"
   DDoS-ICMP_Fragmentation: "DoS"
+  DDoS-UDP_Fragmentation: "DoS"
   DDoS-ACK_Fragmentation: "DoS"
+  DDoS-HTTP_Flood: "DoS"
   DDoS-SlowLoris: "DoS"
-
-  # DoS
   DoS-UDP_Flood: "DoS"
   DoS-TCP_Flood: "DoS"
   DoS-SYN_Flood: "DoS"
   DoS-HTTP_Flood: "DoS"
-
-  # Reconnaissance
   Recon-HostDiscovery: "Reconnaissance"
   Recon-OSScan: "Reconnaissance"
   Recon-PortScan: "Reconnaissance"
   Recon-PingSweep: "Reconnaissance"
   VulnerabilityScan: "Reconnaissance"
-
-  # Brute Force
   DictionaryBruteForce: "Brute force"
-
-  # Spoofing
   DNS_Spoofing: "Spoofing"
   MITM-ArpSpoofing: "Spoofing"
-
-  # Web-Based Attacks
   SqlInjection: "Web attack"
   CommandInjection: "Web attack"
   XSS: "Web attack"
-  Backdoor_Malware: "Botnet/Malware"
   BrowserHijacking: "Web attack"
   Uploading_Attack: "Web attack"
-
-  # Mirai Botnet
+  Backdoor_Malware: "Botnet/Malware"
   Mirai-greeth_flood: "Botnet/Malware"
   Mirai-greip_flood: "Botnet/Malware"
   Mirai-udpplain: "Botnet/Malware"
